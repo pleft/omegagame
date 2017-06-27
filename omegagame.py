@@ -15,15 +15,20 @@ ROWS = 8
 COLS = 21
 
 # initial player position
-x = 0
-y = 1
+x = 10
+y = 4
 
 #initial enemy position
 enemyX = -1
 enemyY = -1
 
+PLAYER = '@'
+BIG_ENEMY = '*'
+SMALL_ENEMY = '.'
+
 hit = True
 score = 0
+lives = 3
 
 class InputDeviceDispatcher(file_dispatcher):
 	def __init__(self, device):
@@ -137,11 +142,8 @@ def player():
 		isMoving=True
 		y -= 1
 	if isMoving:
-		oledExp.setCursor(prevY, prevX)
-		oledExp.writeChar(' ')
-
-	oledExp.setCursor(y, x)
-	oledExp.writeChar('@')
+		clearChar(prevX, prevY)
+	writeChar(PLAYER, x, y)
 
 def enemy():
 	global hit
@@ -152,20 +154,27 @@ def enemy():
 	global score
 	if hit == True:
 		hit = False
-		enemyX = int(random.uniform(1, 20))
+		enemyX = int(random.uniform(0, 20))
 		enemyY = int(random.uniform(1, 7))
-		oledExp.setCursor(enemyY, enemyX)
-		oledExp.writeChar('*')
+		writeChar(BIG_ENEMY, enemyX, enemyY)
 		
 	# basic collision detection
 	if x == enemyX and y == enemyY:
 		hit = True
-		score += 1
+		score += 10
 		writeScore(score)
+
+def writeChar(char, x, y):
+	oledExp.setCursor(y, x)
+	oledExp.writeChar(char)
+
+def clearChar(x, y):
+	oledExp.setCursor(y, x)
+	oledExp.writeChar(' ')	
 
 def writeScore(score):
 	oledExp.setCursor(0, 0)
-	oledExp.write("score: %d" % score)
+	oledExp.write("score: %d  lives: %d" % (score, lives))
 
 def mainLoop():
 	writeScore(0)
@@ -173,8 +182,6 @@ def mainLoop():
 		player()
 		enemy()		
 		
-
-
 def intro():
 	oledExp.setCursor(2, 6)
 	oledExp.write("T  H  E")
