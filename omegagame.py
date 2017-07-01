@@ -5,13 +5,15 @@ from OmegaExpansion import oledExp
 from asyncore import file_dispatcher, loop
 import random
 
-gamepad = InputDevice('/dev/input/event0')
-
+# playfield dimensions
 ROWS = 8
 COLS = 21
 
+# initial player position
 x = 0
 y = 1
+
+#initial enemy position
 enemyX = -1
 enemyY = -1
 
@@ -114,8 +116,8 @@ def player():
 	loop(timeout=1, count=250)
 	movementX = i.getMovX()
 	movementY = i.getMovY()
-	prevX =  x
-	prevY =  y
+	prevX = x
+	prevY = y
 	isMoving = False
 	if movementX>0 and x<COLS-1:
 		isMoving=True
@@ -149,8 +151,9 @@ def enemy():
 		enemyY = int(random.uniform(1, 7))
 		oledExp.setCursor(enemyY, enemyX)
 		oledExp.writeChar('*')
+		
+	# basic collision detection
 	if x == enemyX and y == enemyY:
-		print("hit!")
 		hit = True
 		score += 1
 		writeScore(score)
@@ -181,12 +184,20 @@ def intro():
 		oledExp.setCursor(6, 4)
 		oledExp.write(" P R E S S  S T A R T ")
 		oledExp.setCursor(6, 4)
-		oledExp.write("                      ")
-    
+		oledExp.write("                      ") 
 
-oledExp.driverInit()
-oledExp.setTextColumns()
+def initScreen():
+	oledExp.driverInit()
+	oledExp.setTextColumns()
+
+###################### MAIN ##############################	
+	
+gamepad = InputDevice('/dev/input/event0')
 i = InputDeviceDispatcher(gamepad)
+initScreen()
 
+# play intro
 intro()
+
+# run main game loop
 mainLoop()
