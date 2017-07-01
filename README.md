@@ -1,11 +1,11 @@
 # The Omega-Game
-The Omega Game - a small text game for Onion Omega 2+
+The Omega Game - a small text game for Onion Omega 2+ controlled with usb gamepad!
 
 ![alt text][screenshot]
 
 # Requirements
-- iBuffalo classic usb gamepad 
-- omega-python-evdev library
+- iBuffalo classic usb gamepad [link](https://www.amazon.com/Buffalo-iBuffalo-Classic-Gamepad-BSGP801GY/dp/B002B9XB0E)
+- omega-python-evdev library [link](https://github.com/pleft/omega2-python-evdev)
 
 # Installation
 
