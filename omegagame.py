@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+##################
+#                #
+# The Omega Game #
+#                #
+##################
 from evdev import InputDevice, categorize, ecodes, KeyEvent
 from OmegaExpansion import oledExp
 from asyncore import file_dispatcher, loop
